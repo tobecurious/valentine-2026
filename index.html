@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>A Special Message For You</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
@@ -16,7 +16,7 @@
         body {
             background: linear-gradient(45deg, #fce4ec 0%, #ffe0b2 100%);
             min-height: 100vh;
-            overflow: hidden;
+            overflow-x: hidden; /* Added to prevent horizontal scrolling on mobile */
             font-family: 'Georgia', serif;
             margin: 0;
             display: flex;
@@ -45,7 +45,7 @@
             backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: 30px;
-            padding: 40px;
+            padding: 20px; /* Reduced for mobile padding */
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             max-width: 800px;
             width: 95%;
@@ -55,8 +55,8 @@
 
         .envelope-wrapper {
             position: relative;
-            width: 300px;
-            height: 200px;
+            width: 280px; /* Adjusted slightly for mobile width */
+            height: 180px;
             background: #fff;
             border-radius: 0 0 10px 10px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
@@ -68,9 +68,9 @@
             position: absolute;
             top: 0;
             width: 0; height: 0;
-            border-left: 150px solid transparent;
-            border-right: 150px solid transparent;
-            border-top: 120px solid #ffdde1;
+            border-left: 140px solid transparent; /* Half of wrapper width */
+            border-right: 140px solid transparent;
+            border-top: 110px solid #ffdde1;
             transform-origin: top;
             transition: 0.6s ease;
             z-index: 3;
@@ -92,14 +92,14 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
             transform: rotate(var(--r));
             transition: 0.3s;
-            width: 150px;
+            width: 120px; /* Scaled for mobile display */
         }
 
-        .polaroid img { width: 100%; height: 120px; object-fit: cover; }
+        .polaroid img { width: 100%; height: 100px; object-fit: cover; }
 
         .btn-custom {
             border-radius: 50px;
-            padding: 12px 35px;
+            padding: 12px 25px; /* Adjusted for mobile tap targets */
             font-weight: bold;
             transition: 0.3s;
         }
@@ -116,6 +116,12 @@
         @keyframes floatUp {
             0% { transform: translateY(0) scale(1); opacity: 1; }
             100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
+        }
+
+        /* Helper for mobile headline font sizes */
+        @media (max-width: 600px) {
+            .display-4 { font-size: 2.2rem; }
+            .display-1 { font-size: 3.5rem; }
         }
     </style>
 </head>
@@ -157,7 +163,7 @@
         
         <div class="d-flex justify-content-center gap-3">
             <button class="btn btn-danger btn-custom shadow" onclick="accepted()">YES, I'D LOVE TO!</button>
-            <button class="btn btn-outline-dark btn-custom" id="no-btn" onmouseover="dodge()">No</button>
+            <button class="btn btn-outline-dark btn-custom" id="no-btn" onmouseover="dodge()" onclick="dodge()">No</button>
         </div>
     </div>
 
@@ -188,6 +194,7 @@
 
         function unfoldLove() {
             document.getElementById('envelope').classList.add('open');
+            // MOBILE FIX: play() must happen inside a click/tap event
             document.getElementById('love-song').play();
             setTimeout(() => {
                 document.getElementById('start-screen').style.display = 'none';
@@ -212,9 +219,9 @@
 
         function dodge() {
             const btn = document.getElementById('no-btn');
-            const pad = 100;
-            const x = Math.max(pad, Math.floor(Math.random() * (window.innerWidth - btn.offsetWidth - pad)));
-            const y = Math.max(pad, Math.floor(Math.random() * (window.innerHeight - btn.offsetHeight - pad)));
+            const pad = 60; // Slightly smaller pad for mobile safety
+            const x = Math.max(10, Math.floor(Math.random() * (window.innerWidth - btn.offsetWidth - pad)));
+            const y = Math.max(10, Math.floor(Math.random() * (window.innerHeight - btn.offsetHeight - pad)));
             btn.style.position = 'fixed';
             btn.style.left = x + 'px';
             btn.style.top = y + 'px';
@@ -229,26 +236,27 @@
             document.getElementById('success-screen').classList.remove('d-none');
         }
 
-        // HEART RAIN LOGIC
         function spawnHeart(e) {
             if(!isAccepted) return;
             const heart = document.createElement('div');
             heart.className = 'rain-heart';
             heart.innerHTML = '❤️';
-            // Use mouse position if event exists, otherwise random
-            const x = e.pageX || Math.random() * window.innerWidth;
-            const y = e.pageY || Math.random() * window.innerHeight;
-            heart.style.left = x + 'px';
-            heart.style.top = y + 'px';
+            
+            // Support both Mouse and Touch screen positions
+            const clientX = (e.touches ? e.touches[0].clientX : e.pageX) || Math.random() * window.innerWidth;
+            const clientY = (e.touches ? e.touches[0].clientY : e.pageY) || Math.random() * window.innerHeight;
+
+            heart.style.left = clientX + 'px';
+            heart.style.top = clientY + 'px';
             heart.style.fontSize = Math.random() * 20 + 20 + 'px';
             document.body.appendChild(heart);
             setTimeout(() => heart.remove(), 2000);
         }
 
         document.addEventListener('mousemove', spawnHeart);
+        document.addEventListener('touchstart', spawnHeart); // Added touch rain support
         document.addEventListener('click', spawnHeart);
 
     </script>
 </body>
-
 </html>
