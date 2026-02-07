@@ -109,6 +109,25 @@
             font-weight: bold;
         }
 
+        /* #letter-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 85%;
+            max-width: 500px;
+            background: #fffafa;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.3);
+            z-index: 20000;
+            text-align: left;
+            border: 2px solid #f8bbd0;
+            max-height: 80vh;
+            overflow-y: auto;
+        } */
+
         #letter-modal {
             display: none;
             position: fixed;
@@ -142,6 +161,7 @@
             -webkit-overflow-scrolling: touch;
         }
 
+        /* Ensure the close button is always spaced well at the bottom */
         #letter-modal button {
             margin-top: 20px;
             position: sticky;
@@ -226,9 +246,14 @@
 </head>
 <body>
 
-    <audio id="love-song" loop>
-        <source src="https://github.com/tobecurious/valentine-2026/raw/main/litesaturation.mp3" type="audio/mpeg">
+    <audio id="love-song" loop preload="auto" crossorigin="anonymous">
+        <source src="https://www.chosic.com/wp-content/uploads/2021/04/Magical-Story-Romantic-Piano.mp3" type="audio/mpeg">
+        <source src="https://pixabay.com/music/download/romantic-piano-113540.mp3" type="audio/mpeg">
     </audio>
+
+    <!-- <audio id="love-song" autoplay loop>
+        <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7f3d2b9dc2.mp3?filename=romantic-piano-112191.mp3" type="audio/mp3">
+      </audio> -->
 
     <div id="music-control" onclick="toggleMusic()" class="animate__animated animate__fadeIn">
         <span id="music-icon">🔇</span>
@@ -239,6 +264,8 @@
     <div id="letter-modal" class="animate__animated">
         <h4 style="color: #d81b60;">To my Garima ❤️,</h4>
         <p style="line-height: 1.6; color: #555;">
+            I don’t know how to say this without smiling,
+            but you’ve become my favourite thought lately.<br>
             Words often fail to describe how much you mean to me. Since the day you walked into my life, everything has felt brighter. 
             This isn't just about a day in February; it's about every single day I get to call you mine. <br><br>
             Thank you for being my peace, my joy, and my favorite person. I promise to keep making you smile, just like you make my heart beat faster every time I see you.
@@ -248,7 +275,8 @@
     </div>
 
     <div id="start-screen" class="text-center animate__animated animate__zoomIn">
-        <h2 class="mb-5" style="color: #d81b60;">A special letter for someone special...</h2>
+        <h2 class="mb-5" style="color: #d81b60;">A special letter for someone special... <br/> I made something small for you…
+            Open this when you’re smiling 💖</h2>
         <div class="envelope-wrapper mx-auto" id="envelope" onclick="unfoldLove()">
             <div class="envelope-flap"></div>
             <div class="position-absolute top-50 start-50 translate-middle">
@@ -268,26 +296,34 @@
             <div class="polaroid" style="--r: 3deg;"><img src="images/WhatsApp.jpeg" alt="Memory"></div>
             <div class="polaroid" style="--r: -2deg;"><img src="https://images.unsplash.com/photo-1494774157365-9e04c6720e47?w=200" alt="Memory"></div>
         </div>
+        <br>
+        <p class="fs-5 italic mb-4">
+            Since you walked into my life,<br />
+            ordinary days started feeling special.<br />
+            So I have just one question for you…
+        </p>
 
         <h3 class="mt-5 mb-4">Will you be my Valentine? 🌹</h3>
         
         <div class="d-flex justify-content-center gap-3">
             <button class="btn btn-danger btn-custom shadow" onclick="accepted()">YES, I'D LOVE TO!</button>
-            <button class="btn btn-outline-dark btn-custom" id="no-btn" onmouseover="dodge()" onclick="dodge()">No</button>
+            <button class="btn btn-outline-dark btn-custom" id="no-btn" onmouseover="dodge()" onclick="dodge()">No 😔</button>
         </div>
     </div>
 
     <div id="success-screen" class="d-none text-center animate__animated animate__fadeIn">
-        <h1 class="display-1 fw-bold text-white mb-3">YAY! I Love You ❤️</h1>
+        <h1 class="display-1 fw-bold text-white mb-3">Yayyy! 💖 I knew it! <br/>You just made my heart very, very happy 🥰</h1>
         <h2 class="text-white">Forever & Always, Garima</h2>
         <div class="mt-4">
             <button class="btn btn-light btn-custom text-danger px-5" onclick="openLetter()">📖 Read My Heart</button>
         </div>
-        <p class="text-white mt-4 opacity-75">Click the floating hearts for more surprises!</p>
+        <p class="text-white mt-4 opacity-75">Click the floating hearts for more surprises!<br>
+        PS: In one of the heart there is a special surprise hidden for you.<br>
+        Let me know when you find it.</p>
     </div>
 
     <script>
-        const herName = "GARIMA";
+        const herName = "GARIMA 💕";
         const specialMessages = [
             "Your smile is my favorite sight 🌟",
             "Every moment with you is a dream ✨",
@@ -296,7 +332,8 @@
             "I love you more than words can say! 🌹",
             "You are my sunshine ☀️",
             "My favorite place is inside your hug 🤗",
-            "You're the best part of my day!"
+            "You're the best part of my day!",
+            "I Love You 💞"
         ];
 
         const noButtonTexts = ["Are you sure?", "Really?", "Think again!", "Pwease? 🥺", "Don't do this to me!", "You're breaking my heart 💔"];
@@ -356,11 +393,32 @@
         }
         createPetals();
 
+        // function unfoldLove() {
+        //     document.getElementById('envelope').classList.add('open');
+        //     song.play();
+        //     musicIcon.innerText = "🎵";
+        //     musicBtn.classList.add('music-pulse');
+        //     setTimeout(() => {
+        //         document.getElementById('start-screen').style.display = 'none';
+        //         const main = document.getElementById('main-content');
+        //         main.style.display = 'block';
+        //         main.classList.add('animate__fadeInUp');
+        //         typeEffect();
+        //     }, 800);
+        // }
+
         function unfoldLove() {
+            // First, unlock and play the audio
+            song.play().then(() => {
+                musicIcon.innerText = "🎵";
+                musicBtn.classList.add('music-pulse');
+            }).catch(e => {
+                console.log("Audio waiting for more interaction...");
+            });
+
+            // Then, trigger the animation
             document.getElementById('envelope').classList.add('open');
-            song.play();
-            musicIcon.innerText = "🎵";
-            musicBtn.classList.add('music-pulse');
+            
             setTimeout(() => {
                 document.getElementById('start-screen').style.display = 'none';
                 const main = document.getElementById('main-content');
