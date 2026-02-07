@@ -112,20 +112,40 @@
         #letter-modal {
             display: none;
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 85%;
-            max-width: 500px;
+            
+            /* Center using inset and margin instead of transform */
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            
+            /* Responsive Size */
+            width: 85vw; /* 85% of viewport width */
+            height: fit-content;
+            max-height: 75vh; /* 75% of viewport height */
+            
             background: #fffafa;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 0 50px rgba(0,0,0,0.3);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
             z-index: 20000;
             text-align: left;
             border: 2px solid #f8bbd0;
-            max-height: 80vh;
+            
+            /* Scrolled Content */
             overflow-y: auto;
+            overflow-x: hidden;
+            
+            /* Fix for text and mobile touch */
+            word-wrap: break-word;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        #letter-modal button {
+            margin-top: 20px;
+            position: sticky;
+            bottom: 0;
         }
 
         .envelope-wrapper {
